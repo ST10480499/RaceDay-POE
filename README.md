@@ -24,7 +24,7 @@ A GitHub Actions workflow (`.github/workflows/validate.yml`) runs on every push 
 
 Screenshot of a successful build:
 
-*(insert your CI/CD screenshot here)*
+![image alt](https://github.com/ST10480499/RaceDay-POE/blob/main/Screenshot%202026-09-02%20231635.png?raw=true)
 
 ## Video
 
