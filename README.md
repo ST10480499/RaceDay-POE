@@ -30,4 +30,4 @@ Screenshot of a successful build:
 
 Unlisted YouTube walkthrough of the planning documents, ERD decisions, endpoint plan choices, and a live run of the SQL script in SSMS:
 
-*(insert your YouTube link here)*
+https://youtu.be/jFkDMj5XdUE
