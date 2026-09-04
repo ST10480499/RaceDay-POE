@@ -1,4 +1,13 @@
 # RaceDay-POE
+
+## Tech Stack
+
+- C# / ASP.NET Core (planned for Part 2 API)
+- Microsoft SQL Server
+- ASP.NET MVC (planned)
+- Docker (planned)
+- GitHub Actions for CI/CD
+
 ## About the System
 
 RaceDay is a web-based event management system built for the South African road running, walking, and cycling community. The platform allows Event Organisers to create and manage events, categories, and participant results, while Participants can browse events, enter events, and track their personal results.
