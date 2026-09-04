@@ -43,3 +43,9 @@ Unlisted YouTube walkthrough of the planning documents, ERD decisions, endpoint 
 video works well
 
 https://youtu.be/jFkDMj5XdUE
+
+## Student Details
+
+Student: Roby
+Student Number: ST10480499
+Module: PROG6212 - Programming 2B
