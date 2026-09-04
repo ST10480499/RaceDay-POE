@@ -24,6 +24,7 @@ This repository contains Part 1 of the Portfolio of Evidence for PROG6212: syste
 The `/docs` folder contains the planning documents for this part of the POE:
 
 - `RaceDay_ERD.png` – Entity Relationship Diagram for the database
+- `RaceDay_ERD.png` – Entity Relationship Diagram showing all 6 entities (Roles, Users, Events, Categories, Enrolments, Results) and their relationships.
 - `RaceDay_API_Endpoint_Plan.pdf` – planned API endpoints, covering Authentication, User Profile, Events, Categories, Event Enrolments, and Results
 - `RaceDay_Database.sql` – SQL script that creates and seeds the full database schema in SQL Server Management Studio (SSMS)
 
