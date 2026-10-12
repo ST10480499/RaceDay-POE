@@ -1,4 +1,5 @@
-   bin/
-   obj/
-   *.user
-   .vs/
+.vs/
+bin/
+obj/
+*.user
+*.suo
