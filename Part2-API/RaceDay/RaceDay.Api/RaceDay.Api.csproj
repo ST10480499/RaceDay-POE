@@ -4,8 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <RootNamespace>RaceDay_._Api</RootNamespace>
-    <UserSecretsId>f0214ef5-f6da-4b85-9e1f-1ced2fee130a</UserSecretsId>
+    <UserSecretsId>5f1b501c-62f7-4e4d-b908-42e478c9c25b</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 

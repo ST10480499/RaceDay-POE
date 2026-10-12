@@ -1,4 +1,4 @@
-namespace RaceDay_._Api
+namespace RaceDay.Api
 {
     public class WeatherForecast
     {

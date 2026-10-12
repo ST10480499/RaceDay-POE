@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace RaceDay_._Api.Controllers
+namespace RaceDay.Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]
