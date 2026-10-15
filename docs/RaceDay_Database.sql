@@ -38,18 +38,19 @@ CONSTRAINT FK_Users_Roles FOREIGN KEY (RoleID) REFERENCES Roles(RoleID)
 GO
  
 
--- 3. EVENTS
-
+-- 3. Events
 CREATE TABLE Events (
-EventID INT IDENTITY(1,1) PRIMARY KEY,
-OrganiserID INT NOT NULL,
-EventName NVARCHAR(150) NOT NULL,
-EventDate DATE NOT NULL,
-Location NVARCHAR(200) NOT NULL,
-CONSTRAINT FK_Events_Users FOREIGN KEY (OrganiserID) REFERENCES Users(UserID)
+    EventID INT IDENTITY(1,1) PRIMARY KEY,
+    OrganiserID INT NOT NULL,
+    EventName NVARCHAR(150) NOT NULL,
+    Description NVARCHAR(1000) NOT NULL,
+    EventDate DATE NOT NULL,
+    Location NVARCHAR(200) NOT NULL,
+    Distance DECIMAL(6,2) NOT NULL,
+    EventType NVARCHAR(20) NOT NULL,
+    FOREIGN KEY (OrganiserID) REFERENCES Users(UserID)
 );
 GO
- 
 
 -- 4. CATEGORIES
 
@@ -108,11 +109,10 @@ INSERT INTO Users (RoleID, FullName, Email, PasswordHash) VALUES
 GO
  
 -- Events: 3 events, created by the 2 Organisers (UserID 1 and 2)
-INSERT INTO Events (OrganiserID, EventName, EventDate, Location) VALUES
-(1, 'Johannesburg City Marathon', '2026-11-15', 'Sandton, Johannesburg'),
-(2, 'Soweto Fun Walk', '2026-10-04', 'Soweto, Johannesburg'),
-(1, 'Cape Town Cycle Classic', '2026-12-06', 'Cape Town');
-GO
+INSERT INTO Events (OrganiserID, EventName, Description, EventDate, Location, Distance, EventType) VALUES
+(1, 'Johannesburg City Marathon', 'A road race through the streets of Sandton.', '2026-11-15', 'Sandton, Johannesburg', 21.1, 'run'),
+(2, 'Soweto Fun Walk', 'A relaxed community walk through Soweto.', '2026-10-04', 'Soweto, Johannesburg', 5, 'walk'),
+(1, 'Cape Town Cycle Classic', 'A scenic cycle race around Cape Town.', '2026-12-06', 'Cape Town', 50, 'cycle');
  
 -- Categories: at least one category per event
 INSERT INTO Categories (EventID, CategoryName, MaxParticipants) VALUES
