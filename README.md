@@ -1,5 +1,5 @@
 # RaceDay-POE
-
+Part 2 (RESTful API): see [Part2-API/README.md](Part2-API/README.md)
 ## Tech Stack
 
 - C# / ASP.NET Core (planned for Part 2 API)
