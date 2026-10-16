@@ -43,6 +43,7 @@ Unlisted YouTube walkthrough of the planning documents, ERD decisions, endpoint 
 video works well
 
 https://youtu.be/jFkDMj5XdUE
+https://youtu.be/iXPZHsVZkgA
 
 ## Student Details
 
