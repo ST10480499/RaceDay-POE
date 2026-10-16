@@ -88,7 +88,9 @@ Login creates a cookie session instead of returning a token, because the Part 2 
 A logout endpoint was added so a session can end.
 Viewing events, categories and results needs a login. The Part 1 plan listed these as public.
 Events store a description, distance and event type (run, walk or cycle), as the Part 2 requirements ask. These three columns are added to the SQL script in `docs`.
-CI/CD
+## CI/CD
+<img width="1904" height="917" alt="Screenshot 2026-10-16 121552" src="https://github.com/user-attachments/assets/357a033c-b10b-41ba-841f-013e38de3e21" />
+
 The workflow `.github/workflows/build-and-test.yml` builds the solution and runs all unit tests on every push.
 Screenshot of a successful build:
 (drag the CI screenshot here)
