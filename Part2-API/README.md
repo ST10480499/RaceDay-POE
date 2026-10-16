@@ -96,4 +96,4 @@ Screenshot of a successful build:
 (drag the CI screenshot here)
 Video
 Unlisted YouTube walkthrough of the running API, code structure, endpoints, authentication and unit tests:
-(paste the YouTube link here)
+https://youtu.be/iXPZHsVZkgA
