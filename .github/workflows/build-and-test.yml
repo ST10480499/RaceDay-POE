@@ -1,4 +1,3 @@
-
 name: Build and Test
 on:
 push:
@@ -15,7 +14,9 @@ with:
 dotnet-version: 8.0.x
 name: Restore packages
 run: dotnet restore Part2-API/RaceDay/RaceDay.sln
-name: Build
+name: Build solution
 run: dotnet build Part2-API/RaceDay/RaceDay.sln --no-restore --configuration Release
+name: Build MVC project
+run: dotnet build Part2-API/RaceDay/RaceDay.Web/RaceDay.Web.csproj --no-restore --configuration Release
 name: Run unit tests
 run: dotnet test Part2-API/RaceDay/RaceDay.sln --no-build --configuration Release --verbosity normal
