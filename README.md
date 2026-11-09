@@ -50,3 +50,14 @@ https://youtu.be/iXPZHsVZkgA
 Student: Roby
 Student Number: ST10480499
 Module: PROG6212 - Programming 2B
+Part 3: RaceDay MVC Web App
+ASP.NET Core MVC front end that consumes the Part 2 RESTful API. It has session-based login, an Organiser interface and a Participant interface.
+Run locally
+Open `Part2-API/RaceDay/RaceDay.sln` in Visual Studio.
+Right-click the solution, choose Configure Startup Projects, then Multiple startup projects, and set RaceDay.Api and RaceDay.Web to Start.
+Press F5.
+Run with Docker (single command)
+Build and start the MVC app in one command, pointing it at the running API:
+Then open http://localhost:8080
+Video
+YouTube (unlisted): PASTE-YOUR-LINK-HERE
