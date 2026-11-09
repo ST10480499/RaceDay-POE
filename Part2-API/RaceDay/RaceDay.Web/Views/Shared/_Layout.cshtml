@@ -4,6 +4,7 @@
     var userName = Context.Session.GetString("UserName");
     var loggedIn = !string.IsNullOrEmpty(role);
     var isOrganiser = string.Equals(role, "Organiser", StringComparison.OrdinalIgnoreCase);
+    var isParticipant = string.Equals(role, "Participant", StringComparison.OrdinalIgnoreCase);
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -33,10 +34,13 @@
                                 <a class="nav-link" asp-controller="Organiser" asp-action="Events">My events</a>
                             </li>
                         }
-                        else
+                        else if (isParticipant)
                         {
                             <li class="nav-item">
-                                <a class="nav-link" asp-controller="Home" asp-action="Index">Home</a>
+                                <a class="nav-link" asp-controller="Home" asp-action="Index">Events</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Enrolments" asp-action="Mine">My enrolments</a>
                             </li>
                         }
                     </ul>
