@@ -33,62 +33,69 @@ h1, h2, h3, h4 {
 a {
     color: var(--rd-orange-dark);
 }
-/* Navigation bar /
+
 .raceday-nav {
-background: linear-gradient(90deg, var(--rd-navy), var(--rd-navy-light));
-border-bottom: 4px solid var(--rd-orange);
+    background: linear-gradient(90deg, var(--rd-navy), var(--rd-navy-light));
+    border-bottom: 4px solid var(--rd-orange);
 }
-.raceday-nav .navbar-brand {
-color: var(--rd-orange);
-font-size: 1.5rem;
-letter-spacing: 1px;
-text-transform: uppercase;
-}
-.raceday-nav .nav-link:hover {
-color: var(--rd-orange);
-}
-/* Buttons /
+
+    .raceday-nav .navbar-brand {
+        color: var(--rd-orange);
+        font-size: 1.5rem;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+    }
+
+    .raceday-nav .nav-link:hover {
+        color: var(--rd-orange);
+    }
+
 .btn-primary {
-background-color: var(--rd-orange);
-border-color: var(--rd-orange);
-font-weight: 600;
+    background-color: var(--rd-orange);
+    border-color: var(--rd-orange);
+    font-weight: 600;
 }
-.btn-primary:hover,
-.btn-primary:focus,
-.btn-primary:active {
-background-color: var(--rd-orange-dark) !important;
-border-color: var(--rd-orange-dark) !important;
-}
-/* Cards /
+
+    .btn-primary:hover,
+    .btn-primary:focus,
+    .btn-primary:active {
+        background-color: var(--rd-orange-dark) !important;
+        border-color: var(--rd-orange-dark) !important;
+    }
+
 .card {
-border: 0;
-border-radius: 12px;
+    border: 0;
+    border-radius: 12px;
 }
-/* Form fields /
+
 .form-control:focus,
 .form-select:focus {
-border-color: var(--rd-orange);
-box-shadow: 0 0 0 0.2rem rgba(255, 107, 0, 0.25);
+    border-color: var(--rd-orange);
+    box-shadow: 0 0 0 0.2rem rgba(255, 107, 0, 0.25);
 }
-/* Enrolment status colours /
+
 .status-badge {
-display: inline-block;
-padding: 0.3em 0.8em;
-border-radius: 50px;
-font-size: 0.85rem;
-font-weight: 700;
-color: #fff;
+    display: inline-block;
+    padding: 0.3em 0.8em;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #fff;
 }
+
 .status-confirmed {
-background-color: var(--rd-green);
+    background-color: var(--rd-green);
 }
+
 .status-pending {
-background-color: var(--rd-amber);
-color: #1a1a1a;
+    background-color: var(--rd-amber);
+    color: #1a1a1a;
 }
+
 .status-cancelled {
-background-color: var(--rd-red);
+    background-color: var(--rd-red);
 }
+
 footer {
-background-color: #fff;
+    background-color: #fff;
 }
