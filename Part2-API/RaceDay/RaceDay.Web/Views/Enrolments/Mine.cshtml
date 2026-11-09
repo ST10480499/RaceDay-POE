@@ -1,0 +1,55 @@
+﻿@model List<RaceDay.Web.Models.EnrolmentModel>
+@{
+    ViewData["Title"] = "My enrolments";
+}
+
+<h2 class="mb-3">My enrolments</h2>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-danger">@ViewBag.Error</div>
+}
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        @if (!Model.Any())
+        {
+            <p class="text-muted mb-3">You have not enrolled in any events yet.</p>
+            <a class="btn btn-primary" asp-controller="Home" asp-action="Index">Browse events</a>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table align-middle">
+                    <thead>
+                        <tr>
+                            <th>Event</th>
+                            <th>Category</th>
+                            <th>Enrolled on</th>
+                            <th>Status</th>
+                            <th class="text-end"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var e in Model)
+                        {
+                            <tr>
+                                <td class="fw-semibold">@e.EventName</td>
+                                <td>@e.CategoryName</td>
+                                <td>@e.EnrolmentDate.ToString("dd MMM yyyy")</td>
+                                <td><span class="status-badge status-confirmed">Confirmed</span></td>
+                                <td class="text-end">
+                                    <a class="btn btn-sm btn-outline-secondary" asp-controller="Events" asp-action="Details" asp-route-id="@e.EventID">View event</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>
