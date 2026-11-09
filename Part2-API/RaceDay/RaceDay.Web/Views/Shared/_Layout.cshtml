@@ -3,6 +3,7 @@
     var role = Context.Session.GetString("UserRole");
     var userName = Context.Session.GetString("UserName");
     var loggedIn = !string.IsNullOrEmpty(role);
+    var isOrganiser = string.Equals(role, "Organiser", StringComparison.OrdinalIgnoreCase);
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -23,9 +24,21 @@
                 </button>
                 <div class="collapse navbar-collapse" id="mainNav">
                     <ul class="navbar-nav me-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
+                        @if (isOrganiser)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Organiser" asp-action="Index">Dashboard</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Organiser" asp-action="Events">My events</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Home" asp-action="Index">Home</a>
+                            </li>
+                        }
                     </ul>
                     <ul class="navbar-nav align-items-md-center">
                         @if (loggedIn)
