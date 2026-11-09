@@ -1,0 +1,98 @@
+﻿@model RaceDay.Web.Models.CategoryFormModel
+@{
+    var ev = (RaceDay.Web.Models.EventModel)ViewBag.Event;
+    ViewData["Title"] = "Categories";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h2 class="mb-0">Categories</h2>
+        <div class="text-muted">@ev.EventName, @ev.EventDate.ToString("dd MMM yyyy")</div>
+    </div>
+    <a class="btn btn-outline-secondary" asp-controller="Organiser" asp-action="Events">Back to events</a>
+</div>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
+<div class="row g-4">
+    <div class="col-md-7">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h4 class="mb-3">Current categories</h4>
+
+                @if (!ev.Categories.Any())
+                {
+                    <p class="text-muted mb-0">No categories yet. Add one using the form.</p>
+                }
+                else
+                {
+                    <div class="table-responsive">
+                        <table class="table align-middle">
+                            <thead>
+                                <tr>
+                                    <th>Category</th>
+                                    <th>Max participants</th>
+                                    <th class="text-end">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var c in ev.Categories)
+                                {
+                                    <tr>
+                                        <td class="fw-semibold">@c.CategoryName</td>
+                                        <td>@c.MaxParticipants</td>
+                                        <td class="text-end">
+                                            <a class="btn btn-sm btn-outline-secondary" asp-action="Edit" asp-route-id="@c.CategoryID" asp-route-eventId="@ev.EventID">Edit</a>
+                                            <form asp-action="Delete" asp-route-id="@c.CategoryID" asp-route-eventId="@ev.EventID" method="post" class="d-inline"
+                                                  onsubmit="return confirm('Delete this category?');">
+                                                <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-5">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h4 class="mb-3">Add a category</h4>
+
+                <form asp-action="Add" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="EventID" />
+
+                    <div class="mb-3">
+                        <label asp-for="CategoryName" class="form-label"></label>
+                        <input asp-for="CategoryName" class="form-control" placeholder="e.g. 5km, 10km, Under 18" />
+                        <span asp-validation-for="CategoryName" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="MaxParticipants" class="form-label"></label>
+                        <input asp-for="MaxParticipants" type="number" class="form-control" />
+                        <span asp-validation-for="MaxParticipants" class="text-danger"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100">Add category</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
