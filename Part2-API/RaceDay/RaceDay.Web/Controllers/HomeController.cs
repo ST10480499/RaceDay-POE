@@ -1,32 +1,72 @@
+using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using RaceDay.Web.Models;
-using System.Diagnostics;
+using RaceDay.Web.Services;
 
-namespace RaceDay.Web.Controllers
+namespace RaceDay.Web.Controllers;
+
+public class HomeController : Controller
 {
-    public class HomeController : Controller
+    private readonly ApiService _api;
+
+    public HomeController(ApiService api)
     {
-        private readonly ILogger<HomeController> _logger;
+        _api = api;
+    }
 
-        public HomeController(ILogger<HomeController> logger)
+    public async Task<IActionResult> Index(string? search, string? type)
+    {
+        var role = HttpContext.Session.GetString("UserRole");
+
+        if (string.IsNullOrEmpty(role))
         {
-            _logger = logger;
+            return RedirectToAction("Login", "Account");
         }
 
-        public IActionResult Index()
+        if (string.Equals(role, "Organiser", StringComparison.OrdinalIgnoreCase))
         {
-            return View();
+            return RedirectToAction("Index", "Organiser");
         }
 
-        public IActionResult Privacy()
+        ViewBag.Search = search;
+        ViewBag.Type = type;
+
+        var result = await _api.GetAsync<List<EventModel>>("api/events");
+        if (!result.Success)
         {
-            return View();
+            if (result.Unauthorised)
+            {
+                HttpContext.Session.Clear();
+                return RedirectToAction("Login", "Account");
+            }
+
+            ViewBag.Error = result.Error;
+            return View(new List<EventModel>());
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        var events = (result.Data ?? new List<EventModel>())
+            .Where(e => e.EventDate >= DateTime.Today);
+
+        if (!string.IsNullOrWhiteSpace(search))
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            var term = search.Trim().ToLower();
+            events = events.Where(e =>
+                e.EventName.ToLower().Contains(term) ||
+                e.Location.ToLower().Contains(term));
         }
+
+        if (!string.IsNullOrWhiteSpace(type))
+        {
+            events = events.Where(e =>
+                string.Equals(e.EventType, type, StringComparison.OrdinalIgnoreCase));
+        }
+
+        return View(events.OrderBy(e => e.EventDate).ToList());
+    }
+
+    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+    public IActionResult Error()
+    {
+        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 }
