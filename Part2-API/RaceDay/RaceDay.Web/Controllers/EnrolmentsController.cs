@@ -53,4 +53,21 @@ public class EnrolmentsController : Controller
 
         return View(enrolments.Data ?? new List<EnrolmentModel>());
     }
+
+    // Participant: see all the events they have enrolled for
+    [RequireRole("Participant")]
+    public async Task<IActionResult> Mine()
+    {
+        var result = await _api.GetAsync<List<EnrolmentModel>>("api/users/me/enrolments");
+
+        if (result.Unauthorised)
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Login", "Account");
+        }
+
+        ViewBag.Error = result.Success ? null : result.Error;
+
+        return View(result.Data ?? new List<EnrolmentModel>());
+    }
 }
