@@ -33,6 +33,13 @@ public class AccountController : Controller
 
         HttpContext.Session.SetString("UserRole", result.Role ?? "Participant");
         HttpContext.Session.SetString("UserName", result.Name ?? model.Email);
+        HttpContext.Session.SetString("UserId", result.UserId ?? "0");
+
+        // Each role lands on its own home page
+        if (string.Equals(result.Role, "Organiser", StringComparison.OrdinalIgnoreCase))
+        {
+            return RedirectToAction("Index", "Organiser");
+        }
 
         return RedirectToAction("Index", "Home");
     }
@@ -65,5 +72,11 @@ public class AccountController : Controller
         await _api.LogoutAsync();
         HttpContext.Session.Clear();
         return RedirectToAction("Login");
+    }
+
+    [HttpGet]
+    public IActionResult AccessDenied()
+    {
+        return View();
     }
 }
