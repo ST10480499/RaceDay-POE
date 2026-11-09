@@ -46,6 +46,8 @@ builder.Services.AddSwaggerGen(options =>
     options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFile));
 });
 
+builder.Services.AddSingleton<RaceDay.Api.Services.IFileStorage, RaceDay.Api.Services.LocalFileStorage>();
+
 var app = builder.Build();
 
 // Swagger gives us a web page to view and test the endpoints
