@@ -9,11 +9,28 @@ public class ApiResult
     public string? Error { get; set; }
     public string? Role { get; set; }
     public string? Name { get; set; }
+    public string? UserId { get; set; }
+}
+
+public class ApiResponse<T>
+{
+    public bool Success { get; set; }
+    public T? Data { get; set; }
+    public string? Error { get; set; }
+    public int StatusCode { get; set; }
+    public bool Unauthorised => StatusCode == 401;
 }
 
 public class ApiService
 {
     private const string CookieKey = "ApiCookie";
+    private const string ServerDownMessage = "We could not reach the server. Please try again.";
+
+    private static readonly JsonSerializerOptions JsonOptions = new()
+    {
+        PropertyNameCaseInsensitive = true
+    };
+
     private readonly HttpClient _http;
     private readonly IHttpContextAccessor _accessor;
 
@@ -60,6 +77,8 @@ public class ApiService
         return response;
     }
 
+    // ---------- Login, register, logout ----------
+
     public async Task<ApiResult> LoginAsync(string email, string password)
     {
         try
@@ -79,7 +98,7 @@ public class ApiService
         }
         catch
         {
-            return new ApiResult { Success = false, Error = "We could not reach the server. Please try again." };
+            return new ApiResult { Success = false, Error = ServerDownMessage };
         }
     }
 
@@ -100,7 +119,7 @@ public class ApiService
         }
         catch
         {
-            return new ApiResult { Success = false, Error = "We could not reach the server. Please try again." };
+            return new ApiResult { Success = false, Error = ServerDownMessage };
         }
     }
 
@@ -115,6 +134,99 @@ public class ApiService
             // ignore, we clear the MVC session anyway
         }
         Session.Remove(CookieKey);
+    }
+
+    // ---------- Generic helpers used by all the pages ----------
+
+    public Task<ApiResponse<T>> GetAsync<T>(string url)
+    {
+        return CallAsync<T>(HttpMethod.Get, url, null);
+    }
+
+    public Task<ApiResponse<T>> PostAsync<T>(string url, object? body = null)
+    {
+        return CallAsync<T>(HttpMethod.Post, url, body);
+    }
+
+    public Task<ApiResponse<T>> PutAsync<T>(string url, object body)
+    {
+        return CallAsync<T>(HttpMethod.Put, url, body);
+    }
+
+    public async Task<ApiResponse<bool>> DeleteAsync(string url)
+    {
+        try
+        {
+            var response = await SendAsync(HttpMethod.Delete, url);
+            var text = await response.Content.ReadAsStringAsync();
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return Fail<bool>(response, text);
+            }
+
+            return new ApiResponse<bool>
+            {
+                Success = true,
+                Data = true,
+                StatusCode = (int)response.StatusCode
+            };
+        }
+        catch
+        {
+            return new ApiResponse<bool> { Success = false, Error = ServerDownMessage };
+        }
+    }
+
+    private async Task<ApiResponse<T>> CallAsync<T>(HttpMethod method, string url, object? body)
+    {
+        try
+        {
+            var response = await SendAsync(method, url, body);
+            var text = await response.Content.ReadAsStringAsync();
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return Fail<T>(response, text);
+            }
+
+            var data = JsonSerializer.Deserialize<T>(text, JsonOptions);
+            return new ApiResponse<T>
+            {
+                Success = true,
+                Data = data,
+                StatusCode = (int)response.StatusCode
+            };
+        }
+        catch
+        {
+            return new ApiResponse<T> { Success = false, Error = ServerDownMessage };
+        }
+    }
+
+    private static ApiResponse<T> Fail<T>(HttpResponseMessage response, string text)
+    {
+        var status = (int)response.StatusCode;
+        string message;
+
+        if (status == 401)
+        {
+            message = "Your session has expired. Please log in again.";
+        }
+        else if (status == 403)
+        {
+            message = "You do not have permission to do that.";
+        }
+        else if (status == 404)
+        {
+            message = ReadError(text, "We could not find what you were looking for.");
+        }
+        else
+        {
+            message = ReadError(text, "Something went wrong. Please check your details and try again.");
+        }
+
+        return new ApiResponse<T> { Success = false, Error = message, StatusCode = status };
     }
 
     // ---------- helpers ----------
@@ -142,6 +254,7 @@ public class ApiService
             using var doc = JsonDocument.Parse(json);
             result.Role = Pick(doc.RootElement, "role");
             result.Name = Pick(doc.RootElement, "fullName", "email");
+            result.UserId = Pick(doc.RootElement, "userID");
         }
         catch
         {
