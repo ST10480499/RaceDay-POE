@@ -1,0 +1,53 @@
+﻿@model List<RaceDay.Web.Models.ResultRow>
+@{
+    ViewData["Title"] = "My results";
+    string Ordinal(int n)
+    {
+        var suffix = (n % 100 >= 11 && n % 100 <= 13) ? "th" : ((n % 10) switch { 1 => "st", 2 => "nd", 3 => "rd", _ => "th" });
+        return n + suffix;
+    }
+}
+
+<h2 class="mb-3">My results</h2>
+
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-danger">@ViewBag.Error</div>
+}
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        @if (!Model.Any())
+        {
+            <p class="text-muted mb-0">You have no race results yet. Results appear after an organiser records them.</p>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table align-middle">
+                    <thead>
+                        <tr>
+                            <th>Event</th>
+                            <th>Date</th>
+                            <th>Category</th>
+                            <th>Finish time</th>
+                            <th>Position</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var r in Model)
+                        {
+                            <tr>
+                                <td class="fw-semibold">@r.Result.EventName</td>
+                                <td>@r.EventDate.ToString("dd MMM yyyy")</td>
+                                <td>@r.Result.CategoryName</td>
+                                <td>@r.Result.FinishTime</td>
+                                <td>@Ordinal(r.Result.Position) out of @Math.Max(r.Finishers, r.Result.Position) finishers</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>

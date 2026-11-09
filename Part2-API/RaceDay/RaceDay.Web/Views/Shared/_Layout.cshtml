@@ -1,4 +1,4 @@
-﻿@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Http
 @{
     var role = Context.Session.GetString("UserRole");
     var userName = Context.Session.GetString("UserName");
@@ -40,7 +40,7 @@
                                 <a class="nav-link" asp-controller="Home" asp-action="Index">Events</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" asp-controller="Enrolments" asp-action="Mine">My enrolments</a>
+                                <a class="nav-link" asp-controller="Enrolments" asp-action="Mine">My enrolments</a></li><li class="nav-item"><a class="nav-link" asp-controller="Results" asp-action="Mine">My results</a>
                             </li>
                         }
                     </ul>
@@ -48,7 +48,7 @@
                         @if (loggedIn)
                         {
                             <li class="nav-item">
-                                <span class="navbar-text me-3">@userName (@role)</span>
+                                <a class="navbar-text me-3 text-decoration-none" asp-controller="Profile" asp-action="Index">@userName (@role)</a>
                             </li>
                             <li class="nav-item">
                                 <form asp-controller="Account" asp-action="Logout" method="post">

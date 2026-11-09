@@ -1,0 +1,75 @@
+﻿@model RaceDay.Web.Models.EventResultsViewModel
+@{
+    ViewData["Title"] = "Results";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h2 class="mb-0">Results</h2>
+        <div class="text-muted">@Model.Event.EventName, @Model.Event.EventDate.ToString("dd MMM yyyy")</div>
+    </div>
+    <a class="btn btn-outline-secondary" asp-controller="Organiser" asp-action="Events">Back to events</a>
+</div>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-danger">@ViewBag.Error</div>
+}
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        @if (!Model.Enrolments.Any())
+        {
+            <p class="text-muted mb-0">Nobody has enrolled in this event yet.</p>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table align-middle">
+                    <thead>
+                        <tr>
+                            <th>Participant</th>
+                            <th>Category</th>
+                            <th>Result</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var e in Model.Enrolments)
+                        {
+                            var done = Model.Results.FirstOrDefault(r => r.EnrolmentID == e.EnrolmentID);
+                            <tr>
+                                <td class="fw-semibold">@e.ParticipantName</td>
+                                <td>@e.CategoryName</td>
+                                <td>
+                                    @if (done != null)
+                                    {
+                                        <span class="me-2">@done.FinishTime, position @done.Position</span>
+                                        <span class="status-badge status-confirmed">Recorded</span>
+                                    }
+                                    else
+                                    {
+                                        <form asp-action="Save" method="post" class="d-flex gap-2 flex-wrap">
+                                            <input type="hidden" name="enrolmentId" value="@e.EnrolmentID" />
+                                            <input type="hidden" name="eventId" value="@Model.Event.EventID" />
+                                            <input name="finishTime" class="form-control form-control-sm" style="width:130px" placeholder="01:45:30" pattern="\d{1,2}:\d{2}:\d{2}" required />
+                                            <input name="position" type="number" min="1" class="form-control form-control-sm" style="width:100px" placeholder="Position" required />
+                                            <button type="submit" class="btn btn-sm btn-primary">Save</button>
+                                        </form>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>
