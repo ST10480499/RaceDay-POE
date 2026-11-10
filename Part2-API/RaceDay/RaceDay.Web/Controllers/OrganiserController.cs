@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using RaceDay.Web.Filters;
 using RaceDay.Web.Models;
 using RaceDay.Web.Services;
@@ -93,7 +93,7 @@ public class OrganiserController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateEvent(EventFormModel model)
+    public async Task<IActionResult> CreateEvent(EventFormModel model, IFormFile? banner)
     {
         if (!ModelState.IsValid) return View(model);
 
@@ -107,7 +107,16 @@ public class OrganiserController : Controller
             return View(model);
         }
 
-        TempData["Success"] = "Event created.";
+        if (banner != null && banner.Length > 0 && result.Data != null)
+{
+var upload = await _api.UploadFileAsync($"api/events/{result.Data.EventID}/banner", banner);
+if (!upload.Success)
+{
+TempData["Error"] = "Event created, but the banner was not uploaded: " + upload.Error;
+return RedirectToAction("Events");
+}
+}
+TempData["Success"] = "Event created.";
         return RedirectToAction("Events");
     }
 
@@ -146,7 +155,7 @@ public class OrganiserController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> EditEvent(EventFormModel model)
+    public async Task<IActionResult> EditEvent(EventFormModel model, IFormFile? banner)
     {
         if (!ModelState.IsValid) return View(model);
 
@@ -160,7 +169,16 @@ public class OrganiserController : Controller
             return View(model);
         }
 
-        TempData["Success"] = "Event updated.";
+        if (banner != null && banner.Length > 0)
+{
+var upload = await _api.UploadFileAsync($"api/events/{model.EventID}/banner", banner);
+if (!upload.Success)
+{
+TempData["Error"] = "Event updated, but the banner was not uploaded: " + upload.Error;
+return RedirectToAction("Events");
+}
+}
+TempData["Success"] = "Event updated.";
         return RedirectToAction("Events");
     }
 

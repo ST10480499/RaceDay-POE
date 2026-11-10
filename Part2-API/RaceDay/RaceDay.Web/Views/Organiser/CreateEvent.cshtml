@@ -1,4 +1,4 @@
-﻿@model RaceDay.Web.Models.EventFormModel
+@model RaceDay.Web.Models.EventFormModel
 @{
     ViewData["Title"] = "Create event";
 }
@@ -9,7 +9,7 @@
             <div class="card-body p-4">
                 <h2 class="mb-3">Create event</h2>
 
-                <form asp-action="CreateEvent" method="post">
+                <form asp-action="CreateEvent" method="post" enctype="multipart/form-data">
                     <partial name="_EventForm" model="Model" />
 
                     <button type="submit" class="btn btn-primary">Create event</button>

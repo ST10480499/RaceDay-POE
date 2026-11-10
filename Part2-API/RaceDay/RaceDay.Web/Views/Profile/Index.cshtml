@@ -1,4 +1,4 @@
-﻿@model RaceDay.Web.Models.ProfileFormModel
+@model RaceDay.Web.Models.ProfileFormModel
 @{
     ViewData["Title"] = "My profile";
 }
@@ -18,7 +18,7 @@
                     <div class="alert alert-danger">@ViewBag.Error</div>
                 }
 
-                <form asp-action="Index" method="post">
+                @if (TempData["Error"] != null) { <div class="alert alert-danger">@TempData["Error"]</div> }<div class="mb-3 text-center"><img src="@Url.Action("Picture", "Images")" class="rounded-circle" style="width:120px;height:120px;object-fit:cover" alt="Profile picture" onerror="this.remove()" /></div><form asp-controller="Images" asp-action="UploadPicture" method="post" enctype="multipart/form-data" class="mb-4"><label class="form-label">Profile picture</label><div class="input-group"><input type="file" name="file" accept="image/" class="form-control" required /><button type="submit" class="btn btn-outline-secondary">Upload</button></div></form><form asp-action="Index" method="post">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                     <div class="mb-3">

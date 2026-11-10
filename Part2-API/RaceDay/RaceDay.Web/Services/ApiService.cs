@@ -1,4 +1,4 @@
-﻿using System.Text;
+using System.Text;
 using System.Text.Json;
 
 namespace RaceDay.Web.Services;
@@ -227,6 +227,59 @@ public class ApiService
         }
 
         return new ApiResponse<T> { Success = false, Error = message, StatusCode = status };
+    }
+
+    public async Task<ApiResponse<bool>> UploadFileAsync(string url, IFormFile file)
+    {
+        try
+        {
+            using var content = new MultipartFormDataContent();
+            using var stream = file.OpenReadStream();
+            var fileContent = new StreamContent(stream);
+            fileContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(file.ContentType);
+            content.Add(fileContent, "file", file.FileName);
+
+            var request = new HttpRequestMessage(HttpMethod.Post, url) { Content = content };
+            var cookie = Session.GetString(CookieKey);
+            if (!string.IsNullOrEmpty(cookie))
+            {
+                request.Headers.Add("Cookie", cookie);
+            }
+
+            var response = await _http.SendAsync(request);
+            var text = await response.Content.ReadAsStringAsync();
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return Fail<bool>(response, text);
+            }
+
+            return new ApiResponse<bool> { Success = true, Data = true, StatusCode = (int)response.StatusCode };
+        }
+        catch
+        {
+            return new ApiResponse<bool> { Success = false, Error = ServerDownMessage };
+        }
+    }
+
+    public async Task<(byte[] Bytes, string ContentType)?> GetFileAsync(string url)
+    {
+        try
+        {
+            var response = await SendAsync(HttpMethod.Get, url);
+            if (!response.IsSuccessStatusCode)
+            {
+                return null;
+            }
+
+            var bytes = await response.Content.ReadAsByteArrayAsync();
+            var type = response.Content.Headers.ContentType?.ToString() ?? "application/octet-stream";
+            return (bytes, type);
+        }
+        catch
+        {
+            return null;
+        }
     }
 
     // ---------- helpers ----------
