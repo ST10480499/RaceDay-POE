@@ -36,7 +36,14 @@ Screenshot of a successful build:
 
 ![image alt](https://github.com/ST10480499/RaceDay-POE/blob/main/Screenshot%202026-09-02%20231635.png?raw=true)
 
-## Video
+Features
+Register and log in through the Part 2 API. The MVC app keeps the user's login and role in session, and a RequireRole filter protects every page.
+Organiser: dashboard, create/edit/delete events with a banner image, manage categories, view enrolments, capture results.
+Participant: browse and filter upcoming events, view event details, enrol in a category, My enrolments, My results, profile with a profile picture.
+Enrolment status is colour coded (green for Confirmed).
+Image storage (honest note)
+Event banners and profile pictures are uploaded from the MVC app to the Part 2 API, and only the API handles files. The API saves them through an IFileStorage interface. The current implementation (LocalFileStorage) saves to an Uploads folder on the API server. Azure Blob Storage is NOT connected, because my student account has no Azure subscription. A Blob implementation of IFileStorage is the only piece that would need to be added.
+Video
 
 Unlisted YouTube walkthrough of the planning documents, ERD decisions, endpoint plan choices, and a live run of the SQL script in SSMS:
 
